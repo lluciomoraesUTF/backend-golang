@@ -23,6 +23,7 @@ values (1, 'Resgate da princesa','D');
 insert into Aventura ( id_aventura,id_missao, nome_missao, id_avent, nome_avent)
 values (1,1, 'Resgate da princesa',123, 'Lucio');
 
-drop table Aventureiro;
-drop table Missao;
-drop table Aventura;
+CREATE ROLE estagiario with login 'projeto_de_estagio';
+GRANT ALL PRIVILEGES ON DATABASE bd_aventura TO estagiario;
+
+
