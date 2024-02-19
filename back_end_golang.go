@@ -78,7 +78,7 @@ func Autenticacao() gin.HandlerFunc {
 }
 func main() {
 	// Conectar ao banco de dados PostgreSQL
-	conectar_Banco_Dados()
+	Conexao()
 
 	// Migra o esquema de banco de dados
 	db.AutoMigrate(&Missao{}, &Aventureiro{}, &Aventura{})
