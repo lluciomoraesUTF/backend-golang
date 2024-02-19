@@ -13,7 +13,7 @@ var db *gorm.DB
 func Conexao() {
 	// Conectar ao banco de dados PostgreSQL
 	var err error
-	dsn := "user=estagiario password= '123' dbname=bd_aventura sslmode=disable"
+	dsn := "user=postgres password= '123' dbname=bd_aventura sslmode=disable"
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
