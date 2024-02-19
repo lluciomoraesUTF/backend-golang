@@ -1,71 +1,30 @@
 package main
 
 import (
-	"bufio"
-	"database/sql"
 	"log"
-	"os"
-	"strings"
+	"time"
+
 	"gorm.io/driver/postgres"
-   	"gorm.io/gorm"
+	"gorm.io/gorm"
 )
 
-var db *sql.DB
+var db *gorm.DB
 
-func Conexao() {
-	//Inicia a conexão com o banco de dados
-	db, err := sql.Open("postgres", "user=estagiario password=projeto_de_estagio dbname=bd_aventura sslmode=disable")
+func conectar_Banco_Dados() {
+	// Conectar ao banco de dados PostgreSQL
+	var err error
+	db, err = gorm.Open(postgres.Open("user=estagiario password=projeto_de_estagio dbname=bd_aventura sslmode=disable"), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
 
-	// Cria o banco de dados e as tabelas se não existirem
-	if err := createDatabase(); err != nil {
+	// Configuração do pool de conexões
+	sqlDB, err := db.DB()
+	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Inicia o servidor na porta 8080
-	log.Println("Servidor iniciado na porta 8080")
-	// Aqui você pode adicionar sua lógica de servidor HTTP
-}
-
-func createDatabase() error {
-	//Cria o banco de dados caso ele não exista
-	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS bd_aventura")
-	if err != nil {
-		return err
-	}
-
-	//Seleciona o banco de dados.
-	_, err = db.Exec("bd_aventura")
-	if err != nil {
-		return err
-	}
-
-	// Abre o banco de dados criado.
-	sqlFile, err := os.Open("bd_aventura.sql")
-	if err != nil {
-		return err
-	}
-	defer sqlFile.Close()
-
-	// Executas as Querys criadas no banco
-	scanner := bufio.NewScanner(sqlFile)
-	for scanner.Scan() {
-		query := scanner.Text()
-		query = strings.TrimSpace(query)
-		if query != "" {
-			_, err := db.Exec(query)
-			if err != nil {
-				return err
-			}
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		return err
-	}
-
-	return nil
+	sqlDB.SetMaxOpenConns(10)                 // Número máximo de conexões abertas
+	sqlDB.SetMaxIdleConns(5)                  // Número máximo de conexões inativas no pool
+	sqlDB.SetConnMaxLifetime(time.Minute * 5) // Tempo máximo de vida de uma conexão no pool
 }
