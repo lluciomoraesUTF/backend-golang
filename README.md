@@ -10,4 +10,9 @@ Repositório feito para o processo seletivo da empresa DigitalSys
  Também é fundamental que seja feito o download do driver específico para o PostgreSQL para isso digite no cmd o comando go get -u gorm.io/driver/postgres.
  Para ver os testes unitários e de integração deve se baixar a biblioteca Testfy que pode ser baixada escrevendo o comando go get -u github.com/stretchr/testify/assert
  no cmd.
+Ou para baixar todas as dependencias você também pode clicar ou digitar no arquivo dep.bat ou digitar no terminal o seguinte comando dep.bat caso você esteja trabalhando com Windows.
+Caso esteja trabalhando no linux é só digitar no termina ./dep.sh.
+Para rodar a API você pode escrever no terminal do Windows ou Linux: go run main.go conexao.go teste.go.
+Ou também pode no caso do Windows clicar em run.bat ou digitar run.bat no terminal.
+Caso você use Linux basta digitar no terminal ./run.sh
 

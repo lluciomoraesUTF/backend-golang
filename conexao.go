@@ -1,10 +1,7 @@
-package projeto
+package main
 
 import (
-	"bufio"
 	"log"
-	"os"
-	"strings"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -16,7 +13,7 @@ var db *gorm.DB
 func Conexao() {
 	// Conectar ao banco de dados PostgreSQL
 	var err error
-	dsn := "user=estagiario password=projeto_de_estagio dbname=bd_aventura sslmode=disable"
+	dsn := "user=estagiario password= '123' dbname=bd_aventura sslmode=disable"
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
@@ -41,32 +38,20 @@ func Conexao() {
 }
 
 func criarBancoDeDados() error {
+	// Verifica a existencia das tabelas
+	hasMissao := db.Migrator().HasTable(&Missao{})
+	hasAventureiro := db.Migrator().HasTable(&Aventureiro{})
+	hasAventura := db.Migrator().HasTable(&Aventura{})
+
+	// Se alguma tabela já existir, não cria novas
+	if hasMissao || hasAventureiro || hasAventura {
+		log.Println("As tabelas já existem. Ignorando a criação.")
+		return nil
+	}
+
 	// Automigrar o esquema de banco de dados
 	err := db.AutoMigrate(&Missao{}, &Aventureiro{}, &Aventura{})
 	if err != nil {
-		return err
-	}
-
-	// Abre o arquivo SQL com as queries para criar as tabelas
-	sqlFile, err := os.Open("bd_aventura.sql")
-	if err != nil {
-		return err
-	}
-	defer sqlFile.Close()
-
-	// Executa as queries para criar as tabelas
-	scanner := bufio.NewScanner(sqlFile)
-	for scanner.Scan() {
-		query := scanner.Text()
-		query = strings.TrimSpace(query)
-		if query != "" {
-			if err := db.Exec(query).Error; err != nil {
-				return err
-			}
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
 		return err
 	}
 

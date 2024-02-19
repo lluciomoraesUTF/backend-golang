@@ -1,4 +1,4 @@
-package projeto
+package main
 
 import (
 	"bytes"
@@ -94,7 +94,7 @@ func TestCriarAventura(t *testing.T) {
 	r := setupRouter()
 
 	// Dados da aventura a ser criada
-	aventura := Aventura{id_missao: 1, id_aventureiro: 1}
+	aventura := Aventura{ID_Missao: 1, ID_Aventureiro: 1}
 	payload, _ := json.Marshal(aventura)
 
 	// Simula uma solicitação HTTP POST para /adventures
@@ -112,11 +112,11 @@ func setupRouter() *gin.Engine {
 	r := gin.Default()
 
 	// Rotas de teste
-	r.GET("/missions", listar_MIssoes)
+	r.GET("/missions", listar_Missao)
 	r.POST("/missions", criar_Missao)
 	r.PUT("/missions/:id_missao", atualizar_Missao)
 	r.DELETE("/missions/:id_missao", deletar_Missao)
-	r.GET("/adventures", listar_Aventuras)
+	r.GET("/adventures", listar_Aventura)
 	r.POST("/adventures", criar_Aventura)
 
 	return r
