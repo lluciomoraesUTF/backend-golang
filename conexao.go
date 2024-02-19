@@ -6,13 +6,13 @@ import (
 	"log"
 	"os"
 	"strings"
-
-	_ "github.com/go-sql-driver/mysql"
+	"gorm.io/driver/postgres"
+   	"gorm.io/gorm"
 )
 
 var db *sql.DB
 
-func main() {
+func Conexao() {
 	//Inicia a conexão com o banco de dados
 	db, err := sql.Open("postgres", "user=estagiario password=projeto_de_estagio dbname=bd_aventura sslmode=disable")
 	if err != nil {
