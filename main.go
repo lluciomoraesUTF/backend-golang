@@ -164,8 +164,6 @@ func deletar_Missao(c *gin.Context) {
 
 // Funções CRUD para Aventureiros
 
-// Restante do código aqui...
-
 func listar_Aventura(c *gin.Context) {
 	var adventures []Aventura
 	db.Find(&adventures)

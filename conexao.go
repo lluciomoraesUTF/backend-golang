@@ -33,8 +33,6 @@ func Conexao() {
 	if err := criarBancoDeDados(); err != nil {
 		log.Fatal(err)
 	}
-
-	// Aqui você pode adicionar sua lógica de servidor HTTP
 }
 
 func criarBancoDeDados() error {
